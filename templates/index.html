@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            /* Set the background color for the body */
+        }
+
+        .navbar {
+            background-color: #343a40;
+            /* Set the background color for the navbar */
+            color: #fff;
+            height: 60px;
+            /* Set the desired height for the navbar */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+    <title>{% block title %}CLI-CHAT{% endblock %}</title>
+</head>
+
+<body>
+    <nav class="navbar">
+       {{filename}}
+    </nav>
+    <div class="container">
+        <div class="container chat-container">
+            <div class="message-container" id="message-">
+                {% block response %}
+                <p>{{greetings}}</p>
+                {% endblock %}
+            </div>
+            <div class="action-container" id="start">
+                {% block action %}
+                <form method="post" onsubmit="return false;">
+                    <button name="submit" type="submit" value="Start" class="btn btn-primary"
+                        onclick="showNextContainer('message-container1', 'action-container2')">
+                        {%block btn_msg%}Get {{filename}} dataset attributes{%endblock%}
+                    </button>
+                </form>
+                {% endblock %}
+            </div>
+            <div class="message-container hidden" id="message-container1">
+                {% block columns %}
+                <p>{{cols}}</p>
+                {% endblock %}
+            </div>
+            <div class="action-container hidden" id="action-container2">
+                <form method="post" onsubmit="return false;">
+                    <button name="submit" type="submit" value="Attributes" class="btn btn-primary"
+                        onclick="showNextContainer('message-container2', 'action-container3')">
+                        {%block btn_columns%}View Table{%endblock%}
+                    </button>
+                </form>
+            </div>
+   
+
+            <div class="action-container hidden" id="action-container2">
+                <form method="post" onsubmit="return false;">
+                    <button name="submit" type="submit" value="Attributes" class="btn btn-primary"
+                        onclick="showNextContainer('message-container3', 'action-container3')">
+                        {%block other %}{%endblock%}
+                    </button>
+                </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+
+        function showNextContainer(nextMessageContainer, nextActionContainer) {
+            var nextMessageContainerElement = document.getElementById(nextMessageContainer);
+            var nextActionContainerElement = document.getElementById(nextActionContainer);
+
+
+                nextMessageContainerElement.classList.remove('hidden');
+                nextActionContainerElement.classList.remove('hidden');
+            
+        }
+    </script>
+</body>
+</html>
